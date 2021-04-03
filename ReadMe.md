@@ -1,4 +1,4 @@
-# Collabora Online Server Example
+# Collabora Online Example
 
 > The purpose of this custom setup is to be deployed on Clever Cloud
 
