@@ -1,8 +1,8 @@
-# Collabora Online Server
+# Collabora Online Server Example
 
-> This custom setup purpose is to be deployed on Clever Cloud
+> The purpose of this custom setup is to be deployed on Clever Cloud
 
-It is inspired from original Collabora Online Docker [setup](https://github.com/CollaboraOnline/online/tree/master/docker).
+It is inspired by the original Collabora Online Docker [setup](https://github.com/CollaboraOnline/online/tree/master/docker).
 
 Server should answer `OK` on `/` and admin is accessible with the path `/loleaflet/dist/admin/admin.html`
 
