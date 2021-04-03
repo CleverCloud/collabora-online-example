@@ -1,14 +1,26 @@
-#! /usr/bin/env sh
+#! /usr/bin/env bash
 
-# Replace trusted host and set admin username and password
-perl -pi -e "s/localhost<\/host>/${DOMAIN}<\/host>/g" /etc/loolwsd/loolwsd.xml
-perl -pi -e "s/<username (.*)>.*<\/username>/<username \1>${USERNAME}<\/username>/" /etc/loolwsd/loolwsd.xml
-perl -pi -e "s/<password (.*)>.*<\/password>/<password \1>${PASSWORD}<\/password>/" /etc/loolwsd/loolwsd.xml
-perl -pi -e "s/<server_name (.*)>.*<\/server_name>/<server_name \1>${SERVER_NAME}<\/server_name>/" /etc/loolwsd/loolwsd.xml
-perl -pi -e "s/<allowed_languages (.*)>.*<\/allowed_languages>/<allowed_languages \1>${DICTIONARIES:-en_GB en_US fr_FR}<\/allowed_languages>/" /etc/loolwsd/loolwsd.xml
+set -eux
 
 # Generate WOPI proof key
 loolwsd-generate-proof-key
 
 # Start loolwsd
-exec /usr/bin/loolwsd --port="${PORT}" --disable-ssl --version --o:sys_template_path=/opt/lool/systemplate --o:child_root_path=/opt/lool/child-roots --o:file_server_root_path=/usr/share/loolwsd --o:logging.color=false --o:user_interface.mode=notebookbar ${EXTRA_PARAMS}
+exec /usr/bin/loolwsd \
+    --port="${PORT}" \
+    --version \
+    --override:sys_template_path=/opt/lool/systemplate \
+    --override:child_root_path=/opt/lool/child-roots \
+    --override:file_server_root_path=/usr/share/loolwsd \
+    --override:logging.color=false \
+    --override:user_interface.mode=notebookbar \
+    --override:ssl.enable=false \
+    --override:ssl.termination=true \
+    --override:mount_jail_tree=false \
+    --override:net.post_allow.host[0]=.\{1,99\} \
+    --override:server_name="${SERVER_NAME}" \
+    --override:admin_console.username="${ADMIN_USERNAME}" \
+    --override:admin_console.password="${ADMIN_PASSWORD}" \
+    --override:allowed_languages="${DICTIONARIES:-en_GB en_US fr_FR}" \
+    --override:storage.wopi.host[0]="${AUTHORIZED_DOMAIN}" \
+    ${EXTRA_PARAMS}
