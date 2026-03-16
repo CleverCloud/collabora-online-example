@@ -1,3 +1,6 @@
+> [!NOTE]
+> This repository is pinned to specific versions and is intentionally not updated. It serves as a reference for deploying this particular stack on Clever Cloud
+
 # Collabora Online Example
 
 > The purpose of this custom setup is to be deployed on Clever Cloud
